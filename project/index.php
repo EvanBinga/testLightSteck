@@ -14,7 +14,6 @@ $dbh = new sdbh();
     <title>Форма расчета стоимости</title>
     <!-- Подключаем стили Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <link href="assets/css/style.css" rel="stylesheet" />
     <!-- Подключаем скрипт Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <!-- Стили для скрытия блока результата -->
@@ -48,11 +47,6 @@ $dbh = new sdbh();
         </div>
     </div>
     <div class="row row-body">
-        <div class="col-3">
-            <span style="text-align: center">Форма обратной связи</span>
-            <!-- Иконка Bootstrap для стилизации -->
-            <i class="bi bi-activity"></i>
-        </div>
         <div class="col-9">
             <form method="post" id="form">
                 <div class="mb-3">
