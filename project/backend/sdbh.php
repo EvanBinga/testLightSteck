@@ -1,6 +1,7 @@
 <?php
 /* Small DataBase Handler */
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 /* Root exception class for sdbh */
 class sdbh_exception extends Exception {
 }
@@ -17,34 +18,50 @@ class sdbh_tables_exception extends sdbh_exception {
 }
 
 class sdbh {
-	function __construct($force_master = false){
-		$this->port = 3306;
-		$this -> host = 'localhost';
-		$this -> dbname = 'test_a25';
-		$this -> user = 'root';
-		$this -> pass = '';
-		$mysql_conn = mysqli_connect($this -> host, $this -> user, $this -> pass, $this -> dbname, $this->port);
-	
-		$this -> sql_read = $mysql_conn;
-		$this -> sql_write = false;
-	}
-	
-	
-	protected function get_connection($query){
-		if ($this -> sql_read AND stripos(substr($query,0,10),'select')!==FALSE){
-			$sql = $this -> sql_read;
-		}else{
-			if ($this -> sql_write){
-				$sql = $this -> sql_write;
-			}else{
-				//$sql = $this -> sql_write = mysqli_connect($this -> host, $this -> user, $this -> pass, $this -> dbname, 3306);
-				//$sql -> query('SET NAMES "utf8mb4" COLLATE "utf8mb4_unicode_ci"');
-				$sql = $this -> sql_read;
-			}
-		}
-		return $sql;
-	}
-	
+    public $sql;// Определение свойства $sql
+				// для устранения ошибки, вызванной 
+				// депрекацией динамического 
+				// свойства в предыдущих версиях
+				
+    private $host = 'localhost';
+    private $port = 3306;
+    private $dbname = 'wago2085_bingalo';
+    private $user = 'wago2085_bingalo';
+    private $pass = 'cexez731CEXEZ';
+    public $sql_read;
+    public $sql_write;
+
+    function __construct($force_master = false){
+        $this->connect();
+    }
+
+    private function connect() {
+        $mysql_conn = mysqli_connect($this->host, $this->user, $this->pass, $this->dbname, $this->port);
+
+        if (!$mysql_conn) {
+            die('Ошибка подключения: ' . mysqli_connect_error());
+        } else {
+            $this->sql_read = $mysql_conn;
+            $this->sql_write = false;
+            // echo '<script>alert("Подключение к базе данных успешно установлено!");</script>';
+			// Проверка подлкючения БД
+        }
+    }
+
+    protected function get_connection($query){
+        if ($this->sql_read AND stripos(substr($query,0,10),'select')!==FALSE){
+            $sql = $this->sql_read;
+        } else {
+            if ($this->sql_write){
+                $sql = $this->sql_write;
+            } else {
+                //$sql = $this->sql_write = mysqli_connect($this->host, $this->user, $this->pass, $this->dbname, 3306);
+                //$sql->query('SET NAMES "utf8mb4" COLLATE "utf8mb4_unicode_ci"');
+                $sql = $this->sql_read;
+            }
+        }
+        return $sql;
+    }
 	/**
 	 * Query function, throwing exceptions on errors
 	 * @param query - query string 
